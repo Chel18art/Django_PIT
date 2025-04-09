@@ -1,0 +1,121 @@
+    <!-- core/templates/manage_categories.html -->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Manage Categories</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+        <style>
+            body {
+                background-color: #f9f9f9;
+            }
+            .container {
+                margin-top: 50px;
+            }
+            .back-icon {
+                font-size: 24px;
+                color: #4e73df;
+                cursor: pointer;
+            }
+            .form-inline .form-control {
+                width: 300px;
+            }
+            .table th, .table td {
+                vertical-align: middle;
+            }
+            .btn-danger {
+                padding: 4px 12px;
+            }
+            .search-input {
+                max-width: 300px;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+
+        <!-- Back Icon -->
+        <div class="mb-3">
+            <a href="{% url 'admin_dashboard' %}" class="back-icon">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Category Form -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="POST" class="form-inline">
+                    {% csrf_token %}
+                    <label class="mr-2" for="categoryName"><strong>Enter Category Name:</strong></label>
+                    <input type="text" name="name" id="categoryName" class="form-control mr-2" placeholder="Category name" required>
+                    <button type="submit" class="btn btn-primary">Add Category</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Search and Table -->
+        <div class="row mb-2">
+            <div class="col-md-4">
+                <input type="text" class="form-control search-input" id="searchInput" placeholder="Search Categories...">
+            </div>
+        </div>
+
+        <!-- Category List -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                Category List
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-bordered table-hover mb-0" id="categoryTable">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Date/Time Created</th>
+                            <th>Name</th>
+                            <th>Created By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ category.created_at|date:"Y-m-d H:i" }}</td>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.created_by.username }}</td>
+                            <td>
+                                <form method="POST" action="{% url 'delete_category' pk=category.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    <td>{{ category.created_by.username }}</td>
+                                </form>
+                                
+                                
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">No categories available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Live search for category table
+        document.getElementById('searchInput').addEventListener('keyup', function () {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#categoryTable tbody tr');
+            rows.forEach(row => {
+                const name = row.children[2].textContent.toLowerCase();
+                row.style.display = name.includes(searchTerm) ? '' : 'none';
+            });
+        });
+    </script>
+
+    </body>
+    </html>

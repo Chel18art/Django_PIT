@@ -1,0 +1,177 @@
+<!-- core/templates/admin_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Sales Inventory</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f4f8;
+        }
+        .container {
+            max-width: 1200px;
+            margin-top: 50px;
+        }
+        .card {
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .card-body {
+            text-align: center;
+        }
+        .card-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        .card-label {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-top: 10px;
+        }
+        .option-card {
+            background-color: #4e73df;
+            color: white;
+        }
+        .card-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .icon {
+            font-size: 2rem;
+        }
+        .button {
+            background-color: #4e73df;
+            border-color: #4e73df;
+            color: white;
+        }
+        .card-header {
+            background-color: #4e73df;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2 class="text-center mb-4" style="font-size: 32px; color: #4e73df;">Admin Dashboard</h2>
+
+        <!-- Stats Section -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card" style="background-color: #ff7332;">
+                    <div class="card-body">
+                        <div class="icon"><i class="fas fa-box"></i></div>
+                        <div class="card-value">{{ total_items }}</div>
+                        <div class="card-label">Total Items</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                {% load humanize %}
+
+                    <div class="card" style="background-color: #e96842;">
+                        <div class="card-body">
+                            <div class="icon"><i class="fas fa-credit-card"></i></div>
+                            <div class="card-value">₱{{ total_sales|intcomma }}</div>
+                            <div class="card-label">Total Sales</div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card" style="background-color: #d25d52;">
+                    <div class="card-body">
+                        <div class="icon"><i class="fas fa-category"></i></div>
+                        <div class="card-value">{{ total_categories }}</div>
+                        <div class="card-label">Total Categories</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card" style="background-color: #bc5262;">
+                    <div class="card-body">
+                        <div class="icon"><i class="fas fa-users"></i></div>
+                        <div class="card-value">{{ total_users }}</div>
+                        <div class="card-label">Total Users</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Options Section -->
+        <h4 class="text-center mt-5 mb-4">Management Options</h4>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card option-card">
+                    <div class="card-body">
+                        <i class="fas fa-clipboard-list icon"></i>
+                        <div class="card-header">Inventory</div>
+                        <a href="{% url 'inventory-list' %}" class="btn btn-block button">Go to Inventory</a>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card option-card">
+                    <div class="card-body">
+                        <i class="fas fa-plus-circle icon"></i>
+                        <div class="card-header">Add Item</div>
+                        <a href="{% url 'add-item' %}">Add Item</a> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card option-card">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line icon"></i>
+                        <div class="card-header">Sales Report</div>
+                        <a href="{% url 'sales_report' %}" class="btn btn-block button">View Reports</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card option-card">
+                    <div class="card-body">
+                        <i class="fas fa-cogs icon"></i>
+                        <div class="card-header">Categories</div>
+                        <a href="{% url 'manage_categories' %}" class="btn btn-block button">Manage Categories</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Management Section -->
+        <div class="row mt-5">
+            <div class="col-md-3">
+                <div class="card option-card">
+                    <div class="card-body">
+                        <i class="fas fa-user-cog icon"></i>
+                        <div class="card-header">User Management</div>
+                        <a href="{% url 'manage_users' %}" class="btn btn-block button">Manage Users</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card option-card" style="background-color: #faaac7;">
+                    <div class="card-body">
+                        <i class="fas fa-sign-out-alt icon"></i>
+                        <div class="card-header">Logout</div>
+                        <a href="{% url 'logout' %}" class="btn btn-block button">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

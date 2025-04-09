@@ -1,0 +1,107 @@
+<!-- templates/inventory_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f0f4f8;
+        }
+        .table {
+            margin-top: 30px;
+        }
+        .btn {
+            width: 100%;
+        }
+        .back-btn {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Back Button -->
+        <a href="javascript:history.back()" class="btn btn-secondary back-btn">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+
+        <h2 class="text-center mt-5" style="color: #4e73df;">Inventory List</h2>
+
+        <!-- Search Form -->
+        <form method="GET" action="{% url 'inventory_list' %}" class="mb-4">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search items" value="{{ request.GET.search }}">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Inventory Table -->
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr style="background-color: #e96842; color: white;">
+                    <th>Item #</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.category.name }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₱{{ item.price }}</td>
+                        <td>
+                            <!-- Action Buttons -->
+                            <a href="{% url 'update_item' item.id %}" class="btn btn-warning btn-sm">Update</a>
+                            <a href="{% url 'delete_item' item.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            <a href="{% url 'stock_entry' item.id %}" class="btn btn-success btn-sm">Stock Entry</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">No items found in inventory.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination (if needed) -->
+        <div class="text-center">
+            {% if items.has_other_pages %}
+                <ul class="pagination">
+                    {% if items.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ items.previous_page_number }}">Previous</a></li>
+                    {% endif %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ items.number }}</span>
+                    </li>
+                    {% if items.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ items.next_page_number }}">Next</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ items.paginator.num_pages }}">Last</a></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS & dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

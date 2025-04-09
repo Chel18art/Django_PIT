@@ -1,0 +1,8 @@
+<h2>Cart</h2>
+<ul>
+    {% for item in cart_items %}
+        <li>{{ item.item.name }} - Qty: {{ item.quantity }} - ₱{{ item.item.price }}</li>
+    {% endfor %}
+</ul>
+<p>Total: ₱{{ total }}</p>
+<a href="{% url 'checkout' %}">Checkout</a>

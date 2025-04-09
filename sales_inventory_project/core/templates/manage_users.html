@@ -1,0 +1,17 @@
+<h2>User Management</h2>
+<form method="post">
+    {% csrf_token %}
+    <input name="username" placeholder="Username">
+    <input name="password" type="password" placeholder="Password">
+    <select name="role">
+        <option value="admin">Admin</option>
+        <option value="cashier">Cashier</option>
+    </select>
+    <button type="submit">Create</button>
+</form>
+
+<ul>
+    {% for user in users %}
+        <li>{{ user.username }} - {{ user.role }}</li>
+    {% endfor %}
+</ul>
